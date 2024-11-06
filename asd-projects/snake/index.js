@@ -85,16 +85,16 @@ function checkForNewDirection(event) {
   perpendicular to the current direction
   */
 
-  if (activeKey === KEY.LEFT) {
+  if (activeKey === KEY.LEFT && snake.head.direction !== "right") {
     snake.head.direction = "left";
   }
-  if (activeKey === KEY.RIGHT) {
+  if (activeKey === KEY.RIGHT && snake.head.direction !== "left") {
     snake.head.direction = "right";
   }
-  if (activeKey === KEY.UP) {
+  if (activeKey === KEY.UP && snake.head.direction !== "down") {
     snake.head.direction = "up";
   }
-  if (activeKey === KEY.DOWN) {
+  if (activeKey === KEY.DOWN && snake.head.direction !== "up") {
     snake.head.direction = "down";
   }
 
@@ -114,10 +114,10 @@ function moveSnake() {
   
   */
 
-  for (var i = snake.body.length; i < 1; i--) {
+  for (var i = snake.body.length - 1; i > 0; i--) {
     var snakeSquare = snake.body[i];
 
-    var nextSnakeSquare = snakeSquare;
+    var nextSnakeSquare = snake.body[i-1];
     var nextRow = nextSnakeSquare.row;
     var nextColumn = nextSnakeSquare.column;
     var nextDirection = nextSnakeSquare.direction;
@@ -162,7 +162,7 @@ function hasHitWall() {
   
   HINT: What will the row and column of the snake's head be if this were the case?
   */
-  if (snake.head.row == ROWS + 1 || snake.head.row == -1 || snake.head.column == COLUMNS + 1 || snake.head.column == -1){
+  if (snake.head.row === ROWS + 1 || snake.head.row === -1 || snake.head.column === COLUMNS + 1 || snake.head.column === -1){
     return true;
   }
   else {
@@ -177,7 +177,7 @@ function hasCollidedWithApple() {
   
   HINT: Both the apple and the snake's head are aware of their own row and column
   */
-  if (snake.head.row == apple.row && snake.head.column == apple.column){
+  if (snake.head.row === apple.row && snake.head.column === apple.column){
     return true;
   }
   else {
@@ -207,19 +207,19 @@ function handleAppleCollision() {
   var row;
   var column;
 
-  if (snake.tail.direction == "left"){
+  if (snake.tail.direction === "left"){
     row = snake.tail.row
     column = snake.tail.column - 1
   }
-  if (snake.tail.direction == "right"){
+  if (snake.tail.direction === "right"){
     row = snake.tail.row
     column = snake.tail.column + 1
   }
-  if (snake.tail.direction == "up"){
+  if (snake.tail.direction === "up"){
     row = snake.tail.row - 1
     column = snake.tail.column
   }
-  if (snake.tail.direction == "down"){
+  if (snake.tail.direction === "down"){
     row = snake.tail.row + 1
     column = snake.tail.column
   }
@@ -238,8 +238,12 @@ function hasCollidedWithSnake() {
   head and each part of the snake's body also knows its own row and column.
   
   */
-
-  return false;
+ for (var i = 1; i < snake.body.length - 1; i++){
+  if (snake.body[0].row === snake.body[i].row && snake.body[0].column === snake.body[i].column){
+    return true
+  }
+  }
+ return false;
 }
 
 function endGame() {
@@ -345,7 +349,14 @@ function getRandomAvailablePosition() {
   while (!spaceIsAvailable) {
     randomPosition.column = Math.floor(Math.random() * COLUMNS);
     randomPosition.row = Math.floor(Math.random() * ROWS);
-    spaceIsAvailable = true;
+    for (i = 0; i < snake.body.length; i++){
+      if (snake.body[i].row === randomPosition.row && snake.body[i].column === randomPosition.column){
+        spaceIsAvailable = false
+      }
+      else {
+        spaceIsAvailable = true;
+      }
+    }
 
     /*
     TODO 13: After generating the random position determine if that position is
