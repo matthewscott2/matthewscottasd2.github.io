@@ -247,6 +247,12 @@ function hasCollidedWithSnake() {
 }
 
 function endGame() {
+  if (hasCollidedWithSnake() === true){
+    alert("If you just eat the apple you won't have to eat yourself!");
+  }
+  if (hasHitWall() === true){
+    alert("Try turning next time.");
+  }
   // stop update function from running
   clearInterval(updateInterval);
 
@@ -260,6 +266,8 @@ function endGame() {
 
   // restart the game after 500 ms
   setTimeout(init, 500);
+
+  
 }
 
 ////////////////////////////////////////////////////////////////////////////////
@@ -272,6 +280,7 @@ function endGame() {
 function makeApple() {
   // make the apple jQuery Object and append it to the board
   apple.element = $("<div>").addClass("apple").appendTo(board);
+  /*apple.image = $("<img>").addClass("appleImage").appendTo(apple);*/
 
   // get a random available row/column on the board
   var randomPosition = getRandomAvailablePosition();
