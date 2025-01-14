@@ -8,6 +8,10 @@ function runProgram(){
   ////////////////////////////////////////////////////////////////////////////////
 
   // Constant Variables
+  var WALKER1_WIDTH = $("#walker").width();
+  var WALKER1_HEIGHT = $("#walker").height();
+  var WALKER2_WIDTH = $("#walker2").width();
+  var WALKER2_HEIGHT = $("#walker2").height();
   var FRAME_RATE = 60;
   var FRAMES_PER_SECOND_INTERVAL = 1000 / FRAME_RATE;
   const KEY = {
@@ -59,6 +63,7 @@ function runProgram(){
     repositionGameItem();
     redrawGameItem();
     wallCollision();
+    doCollide(walker, walker2);
   }
   
   /* 
@@ -156,6 +161,36 @@ function runProgram(){
     }
   }
 
+  function doCollide(walker1, walker2) {
+    // TODO: calculate and store the remaining
+    // sides of the square1
+    walker1.x = walker1.left
+    walker1.y = walker1.top
+    walker1.leftX = walker1.x;
+    walker1.topY = walker1.y;
+    walker1.rightX = walker1.x + WALKER1_WIDTH;
+    walker1.bottomY = walker1.y + WALKER1_HEIGHT;
+
+    // TODO: Do the same for square2
+    walker2.x = walker2.left
+    walker2.y = walker2.top
+    walker2.leftX = walker2.x;
+    walker2.topY = walker2.y;
+    walker2.rightX = walker2.x + WALKER2_WIDTH;
+    walker2.bottomY = walker2.y + WALKER2_HEIGHT;
+
+    // Returns true if they are overlapping, false otherwise
+	  if (walker2.rightX > walker1.leftX &&
+        walker2.bottomY > walker1.topY &&
+        walker2.topY < walker1.bottomY &&
+        walker2.leftX < walker1.rightX) {
+      console.log(true);
+    }
+    else {
+      console.log(false);
+    }
+  }
+
   function endGame() {
     // stop the interval timer
     clearInterval(interval);
@@ -163,5 +198,5 @@ function runProgram(){
     // turn off event handlers
     $(document).off();
   }
-  
+  // CHECK LINES 17-38
 }
