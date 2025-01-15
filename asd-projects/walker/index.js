@@ -164,16 +164,16 @@ function runProgram(){
   function doCollide(walker1, walker2) {
     // TODO: calculate and store the remaining
     // sides of the square1
-    walker1.x = walker1.left
-    walker1.y = walker1.top
+    walker1.x = walker1.xPos
+    walker1.y = walker1.yPos
     walker1.leftX = walker1.x;
     walker1.topY = walker1.y;
     walker1.rightX = walker1.x + WALKER1_WIDTH;
     walker1.bottomY = walker1.y + WALKER1_HEIGHT;
 
     // TODO: Do the same for square2
-    walker2.x = walker2.left
-    walker2.y = walker2.top
+    walker2.x = walker2.xPos
+    walker2.y = walker2.yPos
     walker2.leftX = walker2.x;
     walker2.topY = walker2.y;
     walker2.rightX = walker2.x + WALKER2_WIDTH;
@@ -184,10 +184,12 @@ function runProgram(){
         walker2.bottomY > walker1.topY &&
         walker2.topY < walker1.bottomY &&
         walker2.leftX < walker1.rightX) {
-      console.log(true);
+      $("#walker").css("background-color", "rgb(255, 255, 255)")
+      $("#walker2").css("background-color", "rgb(255, 255, 255)")
+      $("#endMessage").text("Gotcha!")
     }
     else {
-      console.log(false);
+      console.log(false)
     }
   }
 
@@ -198,5 +200,5 @@ function runProgram(){
     // turn off event handlers
     $(document).off();
   }
-  // CHECK LINES 17-38
+
 }
